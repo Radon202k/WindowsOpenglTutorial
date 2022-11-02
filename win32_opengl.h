@@ -7182,7 +7182,7 @@ typedef void (* PFNGLCLIPCONTROL) (GLenum origin, GLenum depth);
 #include "opengl_function_loader.h"
 
 static char exe_path[MAX_PATH];
-static u32 exe_path_count;
+static unsigned int exe_path_count;
 
 //
 // search hint: search_opengl_debug_callback
@@ -7208,7 +7208,7 @@ opengl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
 
 void
 init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
-            u32 window_width, u32 window_height)
+            unsigned int window_width, unsigned int window_height)
 {
     // prepare modern opengl context
     HWND dummy_window = CreateWindowExW(0, L"STATIC", L"DummyWindow", WS_OVERLAPPED, 
