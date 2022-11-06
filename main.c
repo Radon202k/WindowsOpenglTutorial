@@ -45,7 +45,7 @@ int WinMain(HINSTANCE instance, HINSTANCE prev_instance, LPSTR cmd_line, int cmd
     HDC device_context;
     HGLRC opengl_context;
     // call init_opengl()
-    init_opengl(&window, &device_context, &opengl_context, 800, 600);
+    init_opengl(&window, &device_context, &opengl_context, 800, 600, "Test window");
     
     // create shader for drawing points
     char *pts_vertex_shader_source =

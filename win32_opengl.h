@@ -7216,7 +7216,8 @@ opengl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
 
 void
 init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
-            unsigned int window_width, unsigned int window_height)
+            unsigned int window_width, unsigned int window_height,
+            char *window_title)
 {
     // prepare modern opengl context
     HWND dummy_window = CreateWindowExW(0, L"STATIC", L"DummyWindow", WS_OVERLAPPED, 
@@ -7329,7 +7330,7 @@ init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
         rect.top = 0;
     }
     *hwnd = CreateWindowEx(0, wc.lpszClassName,
-                           "Test window",
+                           window_title,
                            WS_OVERLAPPEDWINDOW,
                            rect.left, rect.top, 
                            rect.right - rect.left, 
