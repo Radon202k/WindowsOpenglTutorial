@@ -7206,6 +7206,14 @@ opengl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
     }
 }
 
+#ifndef assert
+#define assert(exp) if(!(exp)){*(int*)0=0;}
+#endif
+
+#ifndef array_count
+#define array_count(a) sizeof(a)/sizeof((a)[0])
+#endif
+
 void
 init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
             unsigned int window_width, unsigned int window_height)
