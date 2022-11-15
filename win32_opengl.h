@@ -7225,14 +7225,16 @@ init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
     assert(dummy_window && "Failed to create dummy window");
     HDC dummy_device_context = GetDC(dummy_window);
     assert(dummy_device_context && "Failed to get device context for dummy window");
-    PIXELFORMATDESCRIPTOR pixel_format = 
-    {
-        .nSize = sizeof(pixel_format),
-        .nVersion = 1,
-        .dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
-        .iPixelType = PFD_TYPE_RGBA,
-        .cColorBits = 24,
-    };
+    
+    PIXELFORMATDESCRIPTOR pixel_format = {0};
+    pixel_format.nSize = sizeof(pixel_format);
+    pixel_format.nVersion = 1;
+    pixel_format.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+    pixel_format.iPixelType = PFD_TYPE_RGBA;
+    pixel_format.cColorBits = 24;
+    pixel_format.cDepthBits = 32;
+    pixel_format.iLayerType = PFD_MAIN_PLANE;
+    
     int format = ChoosePixelFormat(dummy_device_context, &pixel_format);
     if (!format) { assert(!"Cannot choose OpenGL pixel format for dummy window!"); }
     int ok = DescribePixelFormat(dummy_device_context, format, sizeof(pixel_format), &pixel_format);
@@ -7295,28 +7297,24 @@ init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
     DestroyWindow(dummy_window);
     
     // window
-    WNDCLASSA wc = 
-    {
-        .lpfnWndProc = window_proc,
-        .hInstance = (0),
-        .lpszClassName = "default_window_class",
-        .style = CS_OWNDC,
-        .hIcon = LoadIcon(0, IDI_EXCLAMATION),
-        .hCursor = LoadCursor(0, IDC_ARROW),
-    };
+    WNDCLASSA wc = {0};
+    wc.lpfnWndProc = window_proc;
+    wc.hInstance = (0);
+    wc.lpszClassName = "default_window_class";
+    wc.style = CS_OWNDC;
+    wc.hIcon = LoadIcon(0, IDI_EXCLAMATION);
+    wc.hCursor = LoadCursor(0, IDC_ARROW);
     
     if (!RegisterClassA(&wc)) 
     {
         assert(!"Failed to register window class.");
     }
     
-    RECT rect = 
-    {
-        .left = 0,
-        .top = 0,
-        .right = window_width,
-        .bottom = window_height,
-    };
+    RECT rect = {0};
+    rect.left = 0;
+    rect.top = 0;
+    rect.right = window_width;
+    rect.bottom = window_height;
     
     AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, 0);
     if (rect.left < 0) 
@@ -7371,10 +7369,9 @@ init_opengl(HWND *hwnd, HDC *hdc, HGLRC *hglrc,
     {
         assert(!"OpenGL does not support required pixel format!");
     }
-    PIXELFORMATDESCRIPTOR desc = 
-    {
-        .nSize = sizeof(PIXELFORMATDESCRIPTOR)
-    };
+    PIXELFORMATDESCRIPTOR desc = {0};
+    desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+    
     ok = DescribePixelFormat(*hdc, format, sizeof(desc), &desc);
     assert(ok && "Failed to describe OpenGL pixel format");
     if (!SetPixelFormat(*hdc, format, &desc)) 
